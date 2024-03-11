@@ -1,3 +1,2 @@
 # tabnine-webinar-demo
-Hello World 123
-Testing 123
+this is a clean readme file
