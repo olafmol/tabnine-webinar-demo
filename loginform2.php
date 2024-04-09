@@ -4,59 +4,59 @@
 session_start();
 
 // MySQL database connection
- = "localhost";
- = "username"; 
- = "password";
- = "myDB";
+$servername = "localhost";
+$username = "username"; 
+$password = "password";
+$dbname = "myDB";
 
 // Create connection
- = mysqli_connect(, , , );
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 
 // Check connection
-if (!) {
+if (!$conn) {
   die("Connection failed: " . mysqli_connect_error());
 }
 
 // If form submitted
-if(["REQUEST_METHOD"] == "POST") {
+if($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Get form data
-   = ['username'];
-   = ['password'];
+  $username = $_POST['username'];
+  $password = $_POST['password'];
 
   // Prepare and bind statement
-   = mysqli_prepare(, "SELECT id, username, password FROM users WHERE username=?");
-  mysqli_stmt_bind_param(, "s", );
+  $stmt = mysqli_prepare($conn, "SELECT id, username, password FROM users WHERE username=?");
+  mysqli_stmt_bind_param($stmt, "s", $username);
 
   // Execute statement
-  mysqli_stmt_execute();
+  mysqli_stmt_execute($stmt);
 
   // Get result
-   = mysqli_stmt_get_result();
+  $result = mysqli_stmt_get_result($stmt);
 
   // If matching record found
-  if(mysqli_num_rows() == 1) {
+  if(mysqli_num_rows($result) == 1) {
     // Fetch data
-     = mysqli_fetch_assoc();
+    $row = mysqli_fetch_assoc($result);
 
     // Verify password
-    if(password_verify(, ['password'])) {
+    if(password_verify($password, $row['password'])) {
       // Start session
       session_start();
 
       // Store data in session variables
-      ['loggedin'] = true;
-      ['username'] = ;
+      $_SESSION['loggedin'] = true;
+      $_SESSION['username'] = $username;
 
       // Redirect to welcome page
       header("location: welcome.php");
     }
     else {
-       = "Invalid password";
+      $error = "Invalid password";
     }
   }
   else {
-     = "Invalid username or password";
+    $error = "Invalid username or password";
   }
 }
 ?>
@@ -73,7 +73,7 @@ if(["REQUEST_METHOD"] == "POST") {
 </form>
 
 <?php
-if(isset()) {
-  echo ; 
+if(isset($error)) {
+  echo $error; 
 }
 ?>
