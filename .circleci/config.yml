@@ -10,6 +10,7 @@ jobs:
     resource_class: small
     steps:
       - checkout
+      - snyk/scan
       - run: php --version
       # Replace this with steps to build a package, or executable
       #- run:
