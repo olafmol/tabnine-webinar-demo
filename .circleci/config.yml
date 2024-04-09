@@ -10,8 +10,14 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - snyk/scan
       - run: php --version
+      - snyk/install
+      - run:
+          command: snyk version
+          name: Which version of snyk is installed
+      - run:
+          command: snyk code test
+          name: Run code scan
       # Replace this with steps to build a package, or executable
       #- run:
       #    name: Build an artifact
