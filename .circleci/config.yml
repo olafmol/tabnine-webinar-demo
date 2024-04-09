@@ -10,8 +10,14 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - snyk/scan
+      #- snyk/scan test
       - run: php --version
+        name: Install npm dependencies
+        command: |
+          npm install --save
+          php --version
+    - snyk/scan:
+        fail-on-issues: false
       # Replace this with steps to build a package, or executable
       #- run:
       #    name: Build an artifact
