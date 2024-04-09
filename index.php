@@ -7,10 +7,10 @@ session_start();
 if(isset(['loggedin']) && ['loggedin'] == true){
 
   // Get the username from the session variables
-   = ['username'];
+  $username = $_SESSION['username'];
 
   // Display welcome message
-  echo "Hello, " .  . "!";
+  echo "Hello, " . $username . "!";
 
 } else {
   // If user is not logged in, redirect to login page
