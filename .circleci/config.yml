@@ -3,6 +3,7 @@ jobs:
   test:
     docker:
       - image: cimg/php:8.3.4
+    resource_class: small
     steps:
       - checkout
       # Replace this with a real test runner invocation
@@ -12,6 +13,7 @@ jobs:
   build:
     docker:
       - image: cimg/php:8.3.4
+    resource_class: small
     steps:
       - checkout
       - run: php --version
