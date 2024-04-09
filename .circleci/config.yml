@@ -23,14 +23,6 @@ jobs:
       #    command: touch example.txt
       #- store_artifacts:
       #    path: example.txt
-  deploy:
-    docker:
-      - image: cimg/php:8.3.4
-    steps:
-      # Replace this with steps to deploy to users
-      #- run:
-      #    name: deploy
-      #    command: '#e.g. ./deploy.sh'
 workflows:
   example:
     jobs:
@@ -38,6 +30,3 @@ workflows:
       - build:
           requires:
             - test
-      - deploy:
-          requires:
-            - build
