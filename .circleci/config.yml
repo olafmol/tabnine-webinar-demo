@@ -1,11 +1,8 @@
-# Couldn't automatically generate a config from your source code.
-# This is a generic template to serve as a base for your custom config
-# See: https://circleci.com/docs/configuration-reference
 version: 2.1
 jobs:
   test:
     docker:
-      - image: cimg/base:stable
+      - image: img/php:8.3.4
     steps:
       - checkout
       # Replace this with a real test runner invocation
@@ -26,7 +23,7 @@ jobs:
           path: example.txt
   deploy:
     docker:
-      - image: cimg/base:stable
+      - image: ccimg/php:8.3.4
     steps:
       # Replace this with steps to deploy to users
       - run:
@@ -41,4 +38,4 @@ workflows:
             - test
       - deploy:
           requires:
-            - test
+            - build
