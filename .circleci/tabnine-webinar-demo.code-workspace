@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"circleci.filters.branchFilter": "allBranches"
+		"circleci.filters.branchFilter": "allBranches",
+		"WhiteSource Advise.Diff.BaseBranch": "main"
 	}
 }
