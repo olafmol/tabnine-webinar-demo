@@ -1,23 +1,26 @@
-import base64
-import hashlib
 import os
-import binascii
 
-def pad(s):
-    return s + b'{' + (os.urandom(ord(s[-1]) - len(s) - 1) if len(s) % 16 != 0 else b'')
+class File:
+    def __init__(self, path):
+        if not os.path.isfile(path) or os.path.basename(path).startswith('/safedir'):
+            raise ValueError("Invalid file path")
+        self.path = path
 
-def unpad(s):
-    return s[:-1 - s[-1:].find(b'{')]
+    def read(self, size=-1):
+        with open(self.path, 'rb') as file:
+            return file.read(size)
 
-def encrypt(key, plaintext):
-    iv = os.urandom(16)
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    ciphertext = iv + cipher.encrypt(pad(plaintext))
-    return base64.b64encode(ciphertext).decode('utf-8')
+    def write(self, data):
+        with open(self.path, 'wb') as file:
+            file.write(data)
 
-def decrypt(key, ciphertext):
-    ciphertext = base64.b64decode(ciphertext)
-    iv = ciphertext[:16]
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    plaintext = unpad(cipher.decrypt(ciphertext[16:]))
-    return plaintext.decode('utf-8')
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
+def open_file(path):
+    if not os.path.isfile(path) or os.path.basename(path).startswith('/safedir'):
+        raise ValueError("Invalid file path")
+    return File(path)
