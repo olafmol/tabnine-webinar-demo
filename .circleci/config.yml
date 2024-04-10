@@ -4,6 +4,12 @@ orbs:
   snyk: snyk/snyk@2.1.0
 
 jobs:
+  deploy:
+    docker:
+      - image: cimg/node:17.2.0 # the primary container, where your job's commands are run
+    steps:
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" # run the `echo` command
   build:
     docker:
       - image: cimg/php:8.3.4
@@ -28,3 +34,11 @@ workflows:
   example:
     jobs:
       - build
+      - hold:
+          type: approval
+          requires:
+            - build
+      - deploy:
+          requires:
+            - hold
+            
