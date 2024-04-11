@@ -8,4 +8,4 @@
 7: we will ask Tabnine to pinpoint and fix the issue
 8: now the pipeline will run succesfully
 
-hello world 123
+hello world
