@@ -4,40 +4,36 @@ orbs:
   snyk: snyk/snyk@2.1.0
 
 jobs:
-  deploy:
-    docker:
-      - image: cimg/php:8.3.4 # the primary container, where your job's commands are run
-    steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
-  build:
+   build:
     docker:
       - image: cimg/php:8.3.4
     resource_class: small
     steps:
       - checkout
-      - run: php --version
+      - run:
+          command: php --version
+          name: show php version
       - snyk/install
       - run:
           command: snyk version
-          name: Which version of snyk is installed
+          name: show snyk version
       - run:
           command: snyk code test
           name: Run code scan
-      # Replace this with steps to build a package, or executable
-      #- run:
-      #    name: Build an artifact
-      #    command: touch example.txt
-      #- store_artifacts:
-      #    path: example.txt
+   deploy:
+    docker:
+      - image: cimg/php:8.3.4 # the primary container, where your job's commands are run
+    steps:
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" # run the `echo` command
 workflows:
   example:
     jobs:
       - build
-      - hold:
-          type: approval
-          requires:
-            - build
+#      - hold:
+#          type: approval
+#          requires:
+#            - build
       - deploy:
           requires:
-            - hold
+            #- hold
