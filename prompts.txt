@@ -1,3 +1,6 @@
 Prompts:
 
-Can you create php code to login a user with username and password?
+1: Can you create php code to login a user with username and password?
+
+2: code to display input from post form
+3: add a comment below process the input comment line with "//display the input within div html elements"
