@@ -1,56 +1,66 @@
 <?php
-// Connect to the database
-$db = mysqli_connect('localhost', 'username', 'password', 'database');
 
-// Check if the form has been submitted
-if (isset($_POST['username']) && isset($_POST['password'])) {
+// Start session 
+session_start();
+
+// MySQL database connection
+$servername = "localhost";
+$username = "username"; 
+$password = "password";
+$dbname = "myDB";
+
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+// Check connection
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+
+// If form submitted
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+  
+  // Get form data
   $username = $_POST['username'];
   $password = $_POST['password'];
-
-  // Escape the username and password
-  $username = mysqli_real_escape_string($db, $username);
-  $password = mysqli_real_escape_string($db, $password);
-
-  // Query the database for the user
-  $query = "SELECT * FROM users WHERE username = '$username'";
-  $result = mysqli_query($db, $query);
-
-  // Check if the user exists
-  if (mysqli_num_rows($result) == 1) {
-    // Fetch the user details
-    $user = mysqli_fetch_array($result);
-
-    // Check if the password is correct
-    if (password_verify($password, $user['password'])) {
-      // Login the user
-      session_start();
-      $_SESSION['username'] = $username;
-      $_SESSION['logged_in'] = true;
-
-      // Redirect to the homepage
-      header('Location: index.php');
-      exit();
-    } else {
-      echo 'Invalid password';
-    }
-  } else {
-    echo 'Invalid username';
+  
+  // SQL query
+  $sql = "SELECT id FROM users WHERE username='$username' AND password='$password'";
+  
+  // Get result
+  $result = mysqli_query($conn, $sql);
+  
+  // If matching record found
+  if(mysqli_num_rows($result) == 1) {
+    // Start session
+    session_start();
+    
+    // Store data in session variables
+    $_SESSION['loggedin'] = true;
+    $_SESSION['username'] = $username;
+    
+    // Redirect to welcome page
+    header("location: welcome.php");
+  }
+  else {
+    $error = "Invalid username or password";
   }
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Login</title>
-  </head>
-  <body>
-    <form method="post">
-      <label for="username">Username:</label><br>
-      <input type="text" id="username" name="username"><br>
-      <label for="password">Password:</label><br>
-      <input type="password" id="password" name="password"><br><br>
-      <input type="submit" value="Login">
-    </form>
-  </body>
-</html>
+// HTML form
+<form action="" method="post">
+  <label>Username:</label>
+  <input type="text" name="username" required>
+  
+  <label>Password:</label>
+  <input type="password" name="password" required>
+  
+  <input type="submit" value="Login">
+</form>
+
+<?php
+if(isset($error)) {
+  echo $error; 
+}
+?>
