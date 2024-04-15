@@ -1,7 +1,7 @@
 version: 2.1
 
-#orbs:
-#  snyk: snyk/snyk@2.1.0
+orbs:
+  snyk: snyk/snyk@2.1.0
 
 jobs:
    build:
@@ -13,13 +13,13 @@ jobs:
       - run:
           command: php --version
           name: show php version
-      #- snyk/install
-      #- run:
-      #    command: snyk version
-      #    name: show snyk version
-      #- run:
-      #    command: snyk code test
-      #    name: Run code scan
+      - snyk/install
+      - run:
+          command: snyk version
+          name: show snyk version
+      - run:
+          command: snyk code test
+          name: Run code scan
    deploy:
     docker:
       - image: cimg/php:8.3.4 # the primary container, where your job's commands are run
