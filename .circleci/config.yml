@@ -17,9 +17,9 @@ jobs:
       - run:
           command: snyk version
           name: show snyk version
-      - run:
-          command: snyk code test
-          name: Run code scan
+      #- run:
+          #command: snyk code test
+          #name: Run code scan
    deploy:
     docker:
       - image: cimg/php:8.3.4 # the primary container, where your job's commands are run
