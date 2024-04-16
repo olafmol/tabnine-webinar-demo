@@ -20,6 +20,13 @@ workflows:
   example:
     jobs:
       - build
-      - deploy:
+      - hold:
+          type: approval
           requires:
             - build
+          filters:
+            branches:
+              only: main
+      - deploy:
+          requires:
+            - hold
