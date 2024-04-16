@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-   build:
+  build:
     docker:
       - image: cimg/php:8.3.4
     resource_class: small
@@ -10,7 +10,7 @@ jobs:
       - run:
           command: php --version
           name: show php version
-   deploy:
+  deploy:
     docker:
       - image: cimg/php:8.3.4 # the primary container, where your job's commands are run
     steps:
